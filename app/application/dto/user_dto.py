@@ -1,22 +1,14 @@
-from datetime import datetime
-
+from pydantic import EmailStr
 from pydantic.dataclasses import dataclass
 
 
 @dataclass(frozen=True)
 class CreateUserInput:
-    frist_name: str
+    first_name: str
     last_name: str
-    email: str
+    email: EmailStr
     password: str
     password_confirmation: str
-
-
-@dataclass(frozen=True)
-class CreateUserOutput:
-    user_id: str
-    name: str
-    email: str
 
 
 @dataclass(frozen=True)
@@ -24,14 +16,11 @@ class UpdateUserInput:
     user_id: str
     first_name: str | None = None
     last_name: str | None = None
-    email: str | None = None
+    email: EmailStr | None = None
 
 
 @dataclass(frozen=True)
-class UpdateUserOutput:
+class UserResponse:
     user_id: str
     name: str
     email: str
-
-    
-    
