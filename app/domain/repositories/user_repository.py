@@ -1,0 +1,17 @@
+from typing import Protocol
+from uuid import UUID
+
+from app.domain.entities.user import User
+
+
+class IUserRepository(Protocol):
+    """
+    Contrato estrutural — a infra implementa sem precisar herdar daqui.
+    O type checker valida pelos métodos, não pela herança.
+    """
+
+    async def save(self, user: User) -> None: ...
+    async def find_by_id(self, user_id: UUID) -> User | None: ...
+    async def find_by_email(self, email: str) -> User | None: ...
+    async def list_all(self) -> list[User]: ...
+    async def delete(self, user_id: UUID) -> None: ...

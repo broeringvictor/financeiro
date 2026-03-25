@@ -1,0 +1,21 @@
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[project]
+name = "financeiro"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.14"
+dependencies = [
+    "alembic>=1.18.4",
+    "argon2-cffi>=25.1.0",
+    "email-validator>=2.3.0",
+    "fastapi>=0.135.2",
+    "psycopg2-binary>=2.9.11",
+    "psycopg[binary]>=3.3.3",
+    "pydantic-settings>=2.13.1",
+    "pytest>=9.0.2",
+    "sqlalchemy>=2.0.48",
+    "uvicorn>=0.42.0",
+]
