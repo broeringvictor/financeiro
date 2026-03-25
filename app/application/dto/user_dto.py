@@ -20,6 +20,14 @@ class UpdateUserInput:
 
 
 @dataclass(frozen=True)
+class ChangePasswordInput:
+    user_id: str
+    current_password: str
+    new_password: str
+    new_password_confirmation: str
+
+
+@dataclass(frozen=True)
 class UserResponse:
     user_id: str
     name: str

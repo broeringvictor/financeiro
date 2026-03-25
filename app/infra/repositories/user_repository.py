@@ -62,12 +62,15 @@ class UserRepository:
 
     @staticmethod
     def _to_entity(model: UserModel) -> User:
-        return User(
+        parts = model.name.split()
+        name = Name.model_construct(
+            value=model.name,
+            first_name=parts[0],
+            last_name=" ".join(parts[1:]) if len(parts) > 1 else parts[0],
+        )
+        return User.model_construct(
             id=model.id,
-            name=Name(
-                first_name=model.name.split()[0],
-                last_name=" ".join(model.name.split()[1:]) or model.name.split()[0],
-            ),
+            name=name,
             email=model.email,
             password=Password.from_hash(model.hashed_password),
             is_active=model.is_active,
