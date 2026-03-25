@@ -1,9 +1,9 @@
 from argon2.exceptions import VerifyMismatchError
 from pydantic import BaseModel, ConfigDict, StrictBool
 
-from configuration import config
+from app.infra.config.settings import get_settings
 
-_hasher = config.password_hasher
+_hasher = get_settings().password_hasher
 
 
 class Password(BaseModel):

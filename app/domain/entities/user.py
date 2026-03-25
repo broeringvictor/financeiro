@@ -1,10 +1,10 @@
 from datetime import UTC, datetime
 from uuid import uuid8
 
-from pydantic import UUID8, BaseModel, EmailStr, Field, StrictBool
+from pydantic import UUID8, BaseModel, EmailStr, Field, StrictBool, field_validator
 
-from domain.value_objects.name import Name
-from domain.value_objects.password import Password
+from app.domain.value_objects.name import Name
+from app.domain.value_objects.password import Password
 
 
 class User(BaseModel):
@@ -15,6 +15,11 @@ class User(BaseModel):
     is_active: StrictBool
     create_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
     modified_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
+
+    @field_validator("email", mode="before")
+    @classmethod
+    def normalize_email(cls, v: str) -> str:
+        return v.lower().strip()
 
     @classmethod
     def create(

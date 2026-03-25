@@ -33,10 +33,9 @@ class Name(BaseModel):
     @model_validator(mode="after")
     def validate_full_name(self):
         full_name = f"{self.first_name} {self.last_name}".strip()
-        if not self.value:
-            self.value = full_name
         if len(full_name) > 100:
             raise ValueError("Full name must be at most 100 characters")
+        self.value = full_name  # sempre sobrescreve com os valores já normalizados
         return self
     
     def __str__(self) -> str:
