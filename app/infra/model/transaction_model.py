@@ -40,4 +40,6 @@ class TransactionModel:
     )
     description: Mapped[str | None] = mapped_column(Text, nullable=True, default=None)
 
-    user: Mapped["UserModel"] = relationship("UserModel", back_populates="transactions", init=False)  # type: ignore[misc]
+    user: Mapped["UserModel"] = relationship(
+        "UserModel", back_populates="transactions", init=False
+    )  # type: ignore[misc]

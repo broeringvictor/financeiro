@@ -7,7 +7,6 @@ from app.infra.model.category_model import CategoryModel
 
 
 class CategoryRepository:
-
     def __init__(self, session: AsyncSession) -> None:
         self._session = session
 

@@ -26,5 +26,3 @@ class GetTransactionUseCase:
         if not transaction:
             raise LookupError(f"Transação '{transaction_id}' não encontrada.")
         return _to_response(transaction)
-
-

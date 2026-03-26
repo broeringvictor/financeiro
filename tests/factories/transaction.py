@@ -17,7 +17,9 @@ class TransactionFactory(factory_boy.Factory):
     user_id = factory_boy.LazyFunction(uuid.uuid8)
     category_id = factory_boy.LazyFunction(lambda: random.randint(1, 100))
     type = factory_boy.LazyFunction(lambda: random.choice(list(TransactionType)))
-    amount = factory_boy.LazyFunction(lambda: Decimal(str(round(random.uniform(1.0, 10000.0), 2))))
+    amount = factory_boy.LazyFunction(
+        lambda: Decimal(str(round(random.uniform(1.0, 10000.0), 2)))
+    )
     description = None
 
     @classmethod

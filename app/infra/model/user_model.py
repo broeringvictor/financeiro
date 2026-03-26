@@ -1,4 +1,3 @@
-from dataclasses import field
 from datetime import datetime
 from typing import List
 from uuid import UUID
@@ -25,6 +24,9 @@ class UserModel:
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
 
     transactions: Mapped[List["TransactionModel"]] = relationship(  # noqa: F821
-        "TransactionModel", back_populates="user", cascade="all, delete-orphan",
-        default_factory=list, init=False,
+        "TransactionModel",
+        back_populates="user",
+        cascade="all, delete-orphan",
+        default_factory=list,
+        init=False,
     )

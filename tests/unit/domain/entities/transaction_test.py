@@ -38,8 +38,18 @@ class TestTransactionCreate:
 
     def test_each_transaction_has_unique_id(self):
         user_id = uuid8()
-        t1 = Transaction.create(user_id=user_id, category_id=1, type=TransactionType.INCOME, amount=Decimal("10"))
-        t2 = Transaction.create(user_id=user_id, category_id=1, type=TransactionType.INCOME, amount=Decimal("10"))
+        t1 = Transaction.create(
+            user_id=user_id,
+            category_id=1,
+            type=TransactionType.INCOME,
+            amount=Decimal("10"),
+        )
+        t2 = Transaction.create(
+            user_id=user_id,
+            category_id=1,
+            type=TransactionType.INCOME,
+            amount=Decimal("10"),
+        )
 
         assert t1.id != t2.id
 

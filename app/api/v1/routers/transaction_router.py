@@ -17,11 +17,20 @@ from app.application.dto.transaction_dto import (
     TransactionResponse,
     UpdateTransactionInput,
 )
-from app.application.use_cases.transaction.create_transaction import CreateTransactionUseCase
-from app.application.use_cases.transaction.delete_transaction import DeleteTransactionUseCase
-from app.application.use_cases.transaction.get_all_transactions import GetUserTransactionsByTypeUseCase, GetUserTransactionsUseCase
+from app.application.use_cases.transaction.create_transaction import (
+    CreateTransactionUseCase,
+)
+from app.application.use_cases.transaction.delete_transaction import (
+    DeleteTransactionUseCase,
+)
+from app.application.use_cases.transaction.get_all_transactions import (
+    GetUserTransactionsByTypeUseCase,
+    GetUserTransactionsUseCase,
+)
 from app.application.use_cases.transaction.get_transaction import GetTransactionUseCase
-from app.application.use_cases.transaction.update_transaction import UpdateTransactionUseCase
+from app.application.use_cases.transaction.update_transaction import (
+    UpdateTransactionUseCase,
+)
 from app.domain.enums.e_transaction import TransactionType
 
 router = APIRouter(prefix="/transactions", tags=["transactions"])
@@ -38,7 +47,9 @@ def _handle_exc(exc: Exception) -> None:
     )
 
 
-@router.post("/", response_model=TransactionResponse, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/", response_model=TransactionResponse, status_code=status.HTTP_201_CREATED
+)
 async def create_transaction(
     body: CreateTransactionInput,
     use_case: CreateTransactionUseCase = Depends(get_create_transaction_use_case),
@@ -63,7 +74,9 @@ async def get_user_transactions(
 async def get_user_transactions_by_type(
     user_id: UUID,
     type: TransactionType,
-    use_case: GetUserTransactionsByTypeUseCase = Depends(get_user_transactions_by_type_use_case),
+    use_case: GetUserTransactionsByTypeUseCase = Depends(
+        get_user_transactions_by_type_use_case
+    ),
 ) -> list[TransactionResponse]:
     return await use_case.execute(user_id, type)
 

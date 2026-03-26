@@ -3,14 +3,28 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.application.use_cases.category.create_category import CreateCategoryUseCase
 from app.application.use_cases.category.delete_category import DeleteCategoryUseCase
-from app.application.use_cases.category.get_all_categories import GetAllCategoriesUseCase as GetAllCategoriesUseCase
-from app.application.use_cases.category.get_category import GetCategoriesByTypeUseCase, GetCategoryUseCase
+from app.application.use_cases.category.get_all_categories import (
+    GetAllCategoriesUseCase as GetAllCategoriesUseCase,
+)
+from app.application.use_cases.category.get_category import (
+    GetCategoriesByTypeUseCase,
+    GetCategoryUseCase,
+)
 from app.application.use_cases.category.update_category import UpdateCategoryUseCase
-from app.application.use_cases.transaction.create_transaction import CreateTransactionUseCase
-from app.application.use_cases.transaction.delete_transaction import DeleteTransactionUseCase
-from app.application.use_cases.transaction.get_all_transactions import GetUserTransactionsByTypeUseCase, GetUserTransactionsUseCase
+from app.application.use_cases.transaction.create_transaction import (
+    CreateTransactionUseCase,
+)
+from app.application.use_cases.transaction.delete_transaction import (
+    DeleteTransactionUseCase,
+)
+from app.application.use_cases.transaction.get_all_transactions import (
+    GetUserTransactionsByTypeUseCase,
+    GetUserTransactionsUseCase,
+)
 from app.application.use_cases.transaction.get_transaction import GetTransactionUseCase
-from app.application.use_cases.transaction.update_transaction import UpdateTransactionUseCase
+from app.application.use_cases.transaction.update_transaction import (
+    UpdateTransactionUseCase,
+)
 from app.application.use_cases.user.change_password import ChangePasswordUseCase
 from app.application.use_cases.user.create_user import CreateUserUseCase
 from app.application.use_cases.user.get_user import GetAllUsersUseCase, GetUserUseCase
@@ -53,6 +67,7 @@ def get_all_users_use_case(
 
 # ── Category ──────────────────────────────────────────────────────────────────
 
+
 def get_create_category_use_case(
     session: AsyncSession = Depends(get_session),
 ) -> CreateCategoryUseCase:
@@ -90,6 +105,7 @@ def get_categories_by_type_use_case(
 
 
 # ── Transaction ───────────────────────────────────────────────────────────────
+
 
 def get_create_transaction_use_case(
     session: AsyncSession = Depends(get_session),

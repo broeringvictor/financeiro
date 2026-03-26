@@ -1,6 +1,9 @@
 from uuid import UUID
 
-from app.application.dto.transaction_dto import TransactionResponse, UpdateTransactionInput
+from app.application.dto.transaction_dto import (
+    TransactionResponse,
+    UpdateTransactionInput,
+)
 from app.domain.repositories.transaction_repository import ITransactionRepository
 
 
@@ -12,7 +15,9 @@ class UpdateTransactionUseCase:
         transaction_id = UUID(input_data.transaction_id)
         transaction = await self._repo.find_by_id(transaction_id)
         if not transaction:
-            raise LookupError(f"Transação '{input_data.transaction_id}' não encontrada.")
+            raise LookupError(
+                f"Transação '{input_data.transaction_id}' não encontrada."
+            )
 
         transaction.update(
             category_id=input_data.category_id,

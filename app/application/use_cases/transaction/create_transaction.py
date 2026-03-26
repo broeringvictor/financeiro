@@ -1,13 +1,18 @@
 from uuid import UUID
 
-from app.application.dto.transaction_dto import CreateTransactionInput, TransactionResponse
+from app.application.dto.transaction_dto import (
+    CreateTransactionInput,
+    TransactionResponse,
+)
 from app.domain.entities.transaction import Transaction
 from app.domain.repositories.transaction_repository import ITransactionRepository
 from app.domain.repositories.user_repository import IUserRepository
 
 
 class CreateTransactionUseCase:
-    def __init__(self, transaction_repo: ITransactionRepository, user_repo: IUserRepository) -> None:
+    def __init__(
+        self, transaction_repo: ITransactionRepository, user_repo: IUserRepository
+    ) -> None:
         self._transaction_repo = transaction_repo
         self._user_repo = user_repo
 

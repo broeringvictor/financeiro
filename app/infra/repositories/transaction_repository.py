@@ -10,7 +10,6 @@ from app.infra.model.transaction_model import TransactionModel
 
 
 class TransactionRepository:
-
     def __init__(self, session: AsyncSession) -> None:
         self._session = session
 

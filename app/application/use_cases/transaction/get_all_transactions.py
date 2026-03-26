@@ -29,7 +29,9 @@ class GetUserTransactionsByTypeUseCase:
     def __init__(self, repo: ITransactionRepository) -> None:
         self._repo = repo
 
-    async def execute(self, user_id: UUID, type: TransactionType) -> list[TransactionResponse]:
+    async def execute(
+        self, user_id: UUID, type: TransactionType
+    ) -> list[TransactionResponse]:
         transactions = await self._repo.find_by_user_and_type(user_id, type)
         return [
             TransactionResponse(
