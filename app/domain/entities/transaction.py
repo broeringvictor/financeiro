@@ -33,3 +33,19 @@ class Transaction(BaseModel):
             amount=Amount.create(amount),
             description=description,
         )
+
+    def update(
+        self,
+        category_id: int | None = None,
+        type: TransactionType | None = None,
+        amount: Decimal | int | float | str | None = None,
+        description: str | None = None,
+    ) -> None:
+        if category_id is not None:
+            self.category_id = category_id
+        if type is not None:
+            self.type = type
+        if amount is not None:
+            self.amount = Amount.create(amount)
+        if description is not None:
+            self.description = description
