@@ -1,8 +1,8 @@
 from uuid import UUID
 
 from app.application.dto.transaction_dto import TransactionResponse
-from app.domain.enums.e_transaction import TransactionType
 from app.domain.repositories.transaction_repository import ITransactionRepository
+from app.domain.value_objects.transaction_type import TransactionType
 
 
 class GetUserTransactionsUseCase:

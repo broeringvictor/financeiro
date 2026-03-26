@@ -5,7 +5,7 @@ from decimal import Decimal
 import factory as factory_boy
 
 from app.domain.entities.transaction import Transaction
-from app.domain.enums.e_transaction import TransactionType
+from app.domain.enums.e_transaction import TransactionTypeEnum
 from app.infra.model.transaction_model import TransactionModel
 
 
@@ -16,7 +16,7 @@ class TransactionFactory(factory_boy.Factory):
 
     user_id = factory_boy.LazyFunction(uuid.uuid8)
     category_id = factory_boy.LazyFunction(lambda: random.randint(1, 100))
-    type = factory_boy.LazyFunction(lambda: random.choice(list(TransactionType)))
+    type = factory_boy.LazyFunction(lambda: random.choice(list(TransactionTypeEnum)))
     amount = factory_boy.LazyFunction(
         lambda: Decimal(str(round(random.uniform(1.0, 10000.0), 2)))
     )

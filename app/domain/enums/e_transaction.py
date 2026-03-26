@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class TransactionType(Enum):
+class TransactionTypeEnum(Enum):
     """
     Enumeration representing different transaction types.
     """
@@ -11,4 +11,4 @@ class TransactionType(Enum):
     TRANSFER = 3
 
     def __str__(self) -> str:
-        return f"TransactionType.{self.name}"
+        return f"TransactionTypeEnum.{self.name}"

@@ -4,7 +4,8 @@ from uuid import uuid8
 import pytest
 
 from app.domain.entities.transaction import Transaction
-from app.domain.enums.e_transaction import TransactionType
+from app.domain.enums.e_transaction import TransactionTypeEnum
+from app.domain.value_objects.transaction_type import TransactionType
 
 
 class TestTransactionCreate:
@@ -13,13 +14,13 @@ class TestTransactionCreate:
         transaction = Transaction.create(
             user_id=user_id,
             category_id=1,
-            type=TransactionType.INCOME,
+            type=TransactionTypeEnum.INCOME,
             amount=Decimal("100.00"),
         )
 
         assert transaction.user_id == user_id
         assert transaction.category_id == 1
-        assert transaction.type == TransactionType.INCOME
+        assert transaction.type == TransactionType.create(TransactionTypeEnum.INCOME)
         assert transaction.amount.value == Decimal("100.00")
         assert transaction.description is None
         assert transaction.id is not None
@@ -29,7 +30,7 @@ class TestTransactionCreate:
         transaction = Transaction.create(
             user_id=uuid8(),
             category_id=1,
-            type=TransactionType.EXPENSE,
+            type=TransactionTypeEnum.EXPENSE,
             amount=Decimal("50.00"),
             description="Conta de luz",
         )
@@ -41,13 +42,13 @@ class TestTransactionCreate:
         t1 = Transaction.create(
             user_id=user_id,
             category_id=1,
-            type=TransactionType.INCOME,
+            type=TransactionTypeEnum.INCOME,
             amount=Decimal("10"),
         )
         t2 = Transaction.create(
             user_id=user_id,
             category_id=1,
-            type=TransactionType.INCOME,
+            type=TransactionTypeEnum.INCOME,
             amount=Decimal("10"),
         )
 
@@ -58,7 +59,7 @@ class TestTransactionCreate:
             Transaction.create(
                 user_id=uuid8(),
                 category_id=1,
-                type=TransactionType.EXPENSE,
+                type=TransactionTypeEnum.EXPENSE,
                 amount=Decimal("0"),
             )
 
@@ -67,16 +68,16 @@ class TestTransactionCreate:
             Transaction.create(
                 user_id=uuid8(),
                 category_id=1,
-                type=TransactionType.EXPENSE,
+                type=TransactionTypeEnum.EXPENSE,
                 amount=Decimal("-10.00"),
             )
 
     def test_all_transaction_types_accepted(self):
-        for t in TransactionType:
+        for t in TransactionTypeEnum:
             transaction = Transaction.create(
                 user_id=uuid8(),
                 category_id=1,
                 type=t,
                 amount=Decimal("1.00"),
             )
-            assert transaction.type == t
+            assert transaction.type == TransactionType.create(t)

@@ -4,8 +4,8 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.domain.entities.transaction import Transaction
-from app.domain.enums.e_transaction import TransactionType
 from app.domain.value_objects.amount import Amount
+from app.domain.value_objects.transaction_type import TransactionType
 from app.infra.model.transaction_model import TransactionModel
 
 
@@ -81,7 +81,7 @@ class TransactionRepository:
             id=model.id,
             user_id=model.user_id,
             category_id=model.category_id,
-            type=TransactionType[model.type],
+            type=TransactionType.create(model.type),
             amount=Amount.from_decimal(model.amount),
             occurred_at=model.occurred_at,
             description=model.description,

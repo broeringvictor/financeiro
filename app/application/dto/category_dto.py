@@ -1,12 +1,12 @@
 from pydantic.dataclasses import dataclass
 
-from app.domain.enums.e_transaction import TransactionType
+from app.domain.enums.e_transaction import TransactionTypeEnum
 
 
 @dataclass(frozen=True)
 class CreateCategoryInput:
     name: str
-    type: TransactionType
+    type: TransactionTypeEnum
     description: str | None = None
 
 

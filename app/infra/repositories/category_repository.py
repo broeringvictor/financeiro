@@ -2,7 +2,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.domain.entities.category import Category
-from app.domain.enums.e_transaction import TransactionType
+from app.domain.value_objects.transaction_type import TransactionType
 from app.infra.model.category_model import CategoryModel
 
 
@@ -40,7 +40,7 @@ class CategoryRepository:
 
     async def find_by_type(self, type: TransactionType) -> list[Category]:
         result = await self._session.execute(
-            select(CategoryModel).where(CategoryModel.type == type)
+            select(CategoryModel).where(CategoryModel.type == type.value)
         )
         return [self._to_entity(m) for m in result.scalars().all()]
 
@@ -54,7 +54,7 @@ class CategoryRepository:
     def _to_model(category: Category) -> CategoryModel:
         return CategoryModel(
             name=category.name,
-            type=category.type,
+            type=category.type.value,
             description=category.description,
         )
 
@@ -63,6 +63,6 @@ class CategoryRepository:
         return Category(
             id=model.id,
             name=model.name,
-            type=model.type,
+            type=TransactionType.create(model.type),
             description=model.description,
         )

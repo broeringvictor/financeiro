@@ -31,7 +31,7 @@ from app.application.use_cases.transaction.get_transaction import GetTransaction
 from app.application.use_cases.transaction.update_transaction import (
     UpdateTransactionUseCase,
 )
-from app.domain.enums.e_transaction import TransactionType
+from app.domain.value_objects.transaction_type import TransactionType
 
 router = APIRouter(prefix="/transactions", tags=["transactions"])
 
@@ -45,6 +45,21 @@ def _handle_exc(exc: Exception) -> None:
     raise HTTPException(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc)
     )
+
+
+def _parse_transaction_type(raw: str) -> TransactionType:
+    try:
+        return TransactionType.create(raw)
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=[
+                {
+                    "field": "path → type",
+                    "message": str(exc),
+                }
+            ],
+        ) from exc
 
 
 @router.post(
@@ -73,12 +88,12 @@ async def get_user_transactions(
 @router.get("/user/{user_id}/type/{type}", response_model=list[TransactionResponse])
 async def get_user_transactions_by_type(
     user_id: UUID,
-    type: TransactionType,
+    type: str,
     use_case: GetUserTransactionsByTypeUseCase = Depends(
         get_user_transactions_by_type_use_case
     ),
 ) -> list[TransactionResponse]:
-    return await use_case.execute(user_id, type)
+    return await use_case.execute(user_id, _parse_transaction_type(type))
 
 
 @router.get("/{transaction_id}", response_model=TransactionResponse)

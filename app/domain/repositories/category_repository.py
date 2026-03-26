@@ -1,7 +1,7 @@
 from typing import Protocol
 
 from app.domain.entities.category import Category
-from app.domain.enums.e_transaction import TransactionType
+from app.domain.value_objects.transaction_type import TransactionType
 
 
 class ICategoryRepository(Protocol):

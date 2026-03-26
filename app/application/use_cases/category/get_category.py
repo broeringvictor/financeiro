@@ -1,6 +1,6 @@
 from app.application.dto.category_dto import CategoryResponse
-from app.domain.enums.e_transaction import TransactionType
 from app.domain.repositories.category_repository import ICategoryRepository
+from app.domain.value_objects.transaction_type import TransactionType
 
 
 class GetCategoryUseCase:

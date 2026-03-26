@@ -2,7 +2,7 @@ from typing import Protocol
 from uuid import UUID
 
 from app.domain.entities.transaction import Transaction
-from app.domain.enums.e_transaction import TransactionType
+from app.domain.value_objects.transaction_type import TransactionType
 
 
 class ITransactionRepository(Protocol):

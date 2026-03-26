@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from app.domain.enums.e_transaction import TransactionType
+from app.domain.value_objects.transaction_type import TransactionType
 
 
 class Category(BaseModel):
@@ -13,7 +13,7 @@ class Category(BaseModel):
     def create(
         cls,
         name: str,
-        type: TransactionType,
+        type: TransactionType | str | int,
         description: str | None = None,
     ) -> "Category":
         name = name.strip()
@@ -21,7 +21,7 @@ class Category(BaseModel):
             raise ValueError("Category name cannot be empty.")
         return cls(
             name=name,
-            type=type,
+            type=TransactionType.create(type),
             description=description,
         )
 

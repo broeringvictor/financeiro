@@ -2,14 +2,14 @@ from decimal import Decimal
 
 from pydantic.dataclasses import dataclass
 
-from app.domain.enums.e_transaction import TransactionType
+from app.domain.enums.e_transaction import TransactionTypeEnum
 
 
 @dataclass(frozen=True)
 class CreateTransactionInput:
     user_id: str
     category_id: int
-    type: TransactionType
+    type: TransactionTypeEnum
     amount: Decimal
     description: str | None = None
 
@@ -18,7 +18,7 @@ class CreateTransactionInput:
 class UpdateTransactionInput:
     transaction_id: str
     category_id: int | None = None
-    type: TransactionType | None = None
+    type: TransactionTypeEnum | None = None
     amount: Decimal | None = None
     description: str | None = None
 

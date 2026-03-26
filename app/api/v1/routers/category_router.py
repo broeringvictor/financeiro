@@ -25,7 +25,7 @@ from app.application.use_cases.category.get_category import (
     GetCategoryUseCase,
 )
 from app.application.use_cases.category.update_category import UpdateCategoryUseCase
-from app.domain.enums.e_transaction import TransactionType
+from app.domain.value_objects.transaction_type import TransactionType
 
 router = APIRouter(prefix="/categories", tags=["categories"])
 
@@ -39,6 +39,21 @@ def _handle_exc(exc: Exception) -> None:
     raise HTTPException(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc)
     )
+
+
+def _parse_transaction_type(raw: str) -> TransactionType:
+    try:
+        return TransactionType.create(raw)
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=[
+                {
+                    "field": "path → type",
+                    "message": str(exc),
+                }
+            ],
+        ) from exc
 
 
 @router.post("/", response_model=CategoryResponse, status_code=status.HTTP_201_CREATED)
@@ -61,10 +76,10 @@ async def get_all_categories(
 
 @router.get("/by-type/{type}", response_model=list[CategoryResponse])
 async def get_categories_by_type(
-    type: TransactionType,
+    type: str,
     use_case: GetCategoriesByTypeUseCase = Depends(get_categories_by_type_use_case),
 ) -> list[CategoryResponse]:
-    return await use_case.execute(type)
+    return await use_case.execute(_parse_transaction_type(type))
 
 
 @router.get("/{category_id}", response_model=CategoryResponse)
