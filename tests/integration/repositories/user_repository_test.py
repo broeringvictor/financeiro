@@ -1,8 +1,13 @@
 import pytest
 import pytest_asyncio
+from decimal import Decimal
+from datetime import UTC, datetime
+from uuid import uuid8
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.domain.entities.user import User
+from app.domain.enums.e_transaction import TransactionTypeEnum
+from app.infra.model.transaction_model import TransactionModel
 from app.infra.repositories.user_repository import UserRepository
 
 
@@ -173,3 +178,37 @@ class TestUserRepositoryDelete:
         from uuid import uuid8
 
         await repo.delete(uuid8())  # não deve lançar
+
+
+class TestUserRepositoryGetBalance:
+    @pytest.mark.asyncio
+    async def test_get_balance_sums_income_minus_expense(
+        self, repo: UserRepository, saved_user: User, session: AsyncSession
+    ):
+        session.add_all(
+            [
+                TransactionModel(
+                    id=uuid8(),
+                    user_id=saved_user.id,
+                    category_id=1,
+                    type=TransactionTypeEnum.INCOME.name,
+                    amount=Decimal("100.00"),
+                    occurred_at=datetime.now(UTC),
+                    description=None,
+                ),
+                TransactionModel(
+                    id=uuid8(),
+                    user_id=saved_user.id,
+                    category_id=1,
+                    type=TransactionTypeEnum.EXPENSE.name,
+                    amount=Decimal("35.50"),
+                    occurred_at=datetime.now(UTC),
+                    description=None,
+                ),
+            ]
+        )
+        await session.flush()
+
+        balance = await repo.get_balance(saved_user.id)
+
+        assert balance == Decimal("64.50")
