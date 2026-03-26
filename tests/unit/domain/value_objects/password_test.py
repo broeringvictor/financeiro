@@ -7,6 +7,7 @@ from domain.value_objects.password import Password
 # fixture = dado reutilizável entre testes.
 # O pytest injeta automaticamente pelo nome do parâmetro da função de teste.
 
+
 @pytest.fixture
 def valid_password() -> Password:
     return Password.create("senha_valida_123")
@@ -14,9 +15,9 @@ def valid_password() -> Password:
 
 # ── create() ──────────────────────────────────────────────────────────────────
 
+
 class TestPasswordCreate:
     """Agrupa testes relacionados ao mesmo comportamento."""
-    
 
     def test_hash_is_not_plain_text(self, valid_password: Password):
         # O hash nunca deve ser igual ao texto original
@@ -54,8 +55,8 @@ class TestPasswordCreate:
 
 # ── verify() ──────────────────────────────────────────────────────────────────
 
-class TestPasswordVerify:
 
+class TestPasswordVerify:
     def test_correct_password_returns_true(self, valid_password: Password):
         assert valid_password.verify("senha_valida_123") is True
 
@@ -71,12 +72,12 @@ class TestPasswordVerify:
 
 # ── from_hash() ───────────────────────────────────────────────────────────────
 
-class TestPasswordFromHash:
 
+class TestPasswordFromHash:
     def test_reconstructed_password_verifies_correctly(self):
         # Simula o ciclo completo: criar → salvar hash → reconstruir → verificar
         original = Password.create("senha_valida_123")
-        hash_salvo = original.hashed_value          # o que vai pro banco
+        hash_salvo = original.hashed_value  # o que vai pro banco
 
         reconstruido = Password.from_hash(hash_salvo)  # leitura do banco
 
@@ -92,8 +93,8 @@ class TestPasswordFromHash:
 
 # ── imutabilidade (frozen=True) ───────────────────────────────────────────────
 
-class TestPasswordImmutability:
 
+class TestPasswordImmutability:
     def test_cannot_overwrite_hashed_value(self, valid_password: Password):
         with pytest.raises(Exception):
             valid_password.hashed_value = "outro_hash"  # type: ignore[misc]

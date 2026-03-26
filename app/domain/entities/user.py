@@ -3,6 +3,7 @@ from uuid import uuid8
 
 from pydantic import UUID8, BaseModel, EmailStr, Field, StrictBool, field_validator
 
+from app.domain.entities.transaction import Transaction
 from app.domain.value_objects.name import Name
 from app.domain.value_objects.password import Password
 
@@ -15,6 +16,7 @@ class User(BaseModel):
     is_active: StrictBool
     create_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
     modified_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
+    transactions: list[Transaction] = Field(default_factory=list)
 
     @field_validator("email", mode="before")
     @classmethod
@@ -53,7 +55,9 @@ class User(BaseModel):
         """Edita os dados do usuário. Apenas os campos informados são alterados."""
         if first_name is not None or last_name is not None:
             self.name = Name(
-                first_name=first_name if first_name is not None else self.name.first_name,
+                first_name=first_name
+                if first_name is not None
+                else self.name.first_name,
                 last_name=last_name if last_name is not None else self.name.last_name,
             )
         if email is not None:

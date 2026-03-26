@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.domain.entities.user import User
 from app.domain.value_objects.name import Name
 from app.domain.value_objects.password import Password
-from app.infra.model.user_models import UserModel
+from app.infra.model.user_model import UserModel
 
 
 class UserRepository:

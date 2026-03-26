@@ -8,8 +8,6 @@ class Name(BaseModel):
     first_name: str
     last_name: str
 
-
-
     @field_validator("first_name", "last_name")
     @classmethod
     def validate_required_names(cls, v, info):
@@ -37,6 +35,6 @@ class Name(BaseModel):
             raise ValueError("Full name must be at most 50 characters")
         self.value = full_name
         return self
-    
+
     def __str__(self) -> str:
         return self.value

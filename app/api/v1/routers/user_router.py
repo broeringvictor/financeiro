@@ -11,7 +11,12 @@ from app.api.v1.dependencies import (
     get_update_user_use_case,
     get_user_use_case,
 )
-from app.application.dto.user_dto import ChangePasswordInput, CreateUserInput, UpdateUserInput, UserResponse
+from app.application.dto.user_dto import (
+    ChangePasswordInput,
+    CreateUserInput,
+    UpdateUserInput,
+    UserResponse,
+)
 from app.application.use_cases.user.change_password import ChangePasswordUseCase
 from app.application.use_cases.user.create_user import CreateUserUseCase
 from app.application.use_cases.user.get_user import GetAllUsersUseCase, GetUserUseCase
@@ -22,8 +27,13 @@ router = APIRouter(prefix="/users", tags=["users"])
 
 def _handle_exc(exc: Exception) -> None:
     if isinstance(exc, ValidationError):
-        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=format_errors(exc.errors()))
-    raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc))
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=format_errors(exc.errors()),
+        )
+    raise HTTPException(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc)
+    )
 
 
 @router.post("/", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
@@ -62,12 +72,14 @@ async def update_user(
     use_case: UpdateUserUseCase = Depends(get_update_user_use_case),
 ) -> UserResponse:
     try:
-        return await use_case.execute(UpdateUserInput(
-            user_id=user_id,
-            first_name=body.first_name,
-            last_name=body.last_name,
-            email=body.email,
-        ))
+        return await use_case.execute(
+            UpdateUserInput(
+                user_id=user_id,
+                first_name=body.first_name,
+                last_name=body.last_name,
+                email=body.email,
+            )
+        )
     except LookupError as exc:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc))
     except (ValidationError, ValueError) as exc:
@@ -81,12 +93,14 @@ async def change_password(
     use_case: ChangePasswordUseCase = Depends(get_change_password_use_case),
 ) -> None:
     try:
-        await use_case.execute(ChangePasswordInput(
-            user_id=user_id,
-            current_password=body.current_password,
-            new_password=body.new_password,
-            new_password_confirmation=body.new_password_confirmation,
-        ))
+        await use_case.execute(
+            ChangePasswordInput(
+                user_id=user_id,
+                current_password=body.current_password,
+                new_password=body.new_password,
+                new_password_confirmation=body.new_password_confirmation,
+            )
+        )
     except LookupError as exc:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc))
     except (ValidationError, ValueError) as exc:

@@ -4,7 +4,6 @@ from app.domain.repositories.user_repository import IUserRepository
 
 
 class CreateUserUseCase:
-
     def __init__(self, user_repo: IUserRepository) -> None:
         self._repo = user_repo
 

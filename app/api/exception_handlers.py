@@ -14,9 +14,17 @@ def format_errors(errors: list) -> list:
     ]
 
 
-async def validation_error_handler(request: Request, exc: ValidationError) -> JSONResponse:
-    return JSONResponse(status_code=422, content={"detail": format_errors(exc.errors())})
+async def validation_error_handler(
+    request: Request, exc: ValidationError
+) -> JSONResponse:
+    return JSONResponse(
+        status_code=422, content={"detail": format_errors(exc.errors())}
+    )
 
 
-async def request_validation_error_handler(request: Request, exc: RequestValidationError) -> JSONResponse:
-    return JSONResponse(status_code=422, content={"detail": format_errors(exc.errors())})
+async def request_validation_error_handler(
+    request: Request, exc: RequestValidationError
+) -> JSONResponse:
+    return JSONResponse(
+        status_code=422, content={"detail": format_errors(exc.errors())}
+    )

@@ -5,10 +5,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(
-        env_file='.env', env_file_encoding='utf-8'
-    )
-    
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
+
     # Config MAP
     ## DB
     POSTGRES_HOST: str = "localhost"
@@ -23,12 +21,10 @@ class Settings(BaseSettings):
     @property
     def database_url(self) -> str:
         return f"postgresql+psycopg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
-    
 
-
-    argon2_time_cost: int = 2        # iterações
+    argon2_time_cost: int = 2  # iterações
     argon2_memory_cost: int = 65536  # (64 MB)
-    argon2_parallelism: int = 2      # threads
+    argon2_parallelism: int = 2  # threads
 
     @property
     def password_hasher(self) -> PasswordHasher:
