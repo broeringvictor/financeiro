@@ -1,11 +1,14 @@
 from uuid import UUID
+from decimal import Decimal
 
-from sqlalchemy import select
+from sqlalchemy import case, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.domain.entities.user import User
+from app.domain.enums.e_transaction import TransactionTypeEnum
 from app.domain.value_objects.name import Name
 from app.domain.value_objects.password import Password
+from app.infra.model.transaction_model import TransactionModel
 from app.infra.model.user_model import UserModel
 
 
@@ -45,6 +48,18 @@ class UserRepository:
     async def list_all(self) -> list[User]:
         result = await self._session.execute(select(UserModel))
         return [self._to_entity(m) for m in result.scalars().all()]
+
+    async def get_balance(self, user_id: UUID) -> Decimal:
+        signed_amount = case(
+            (TransactionModel.type == TransactionTypeEnum.INCOME.name, TransactionModel.amount),
+            (TransactionModel.type == TransactionTypeEnum.EXPENSE.name, -TransactionModel.amount),
+            else_=0,
+        )
+        result = await self._session.execute(
+            select(func.coalesce(func.sum(signed_amount), 0))
+            .where(TransactionModel.user_id == user_id)
+        )
+        return result.scalar_one()
 
     # ── mapeamento Entity ↔ Model ─────────────────────────────────────────────
 

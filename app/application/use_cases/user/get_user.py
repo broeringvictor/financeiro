@@ -13,10 +13,13 @@ class GetUserUseCase:
         if not user:
             raise LookupError(f"Usuário '{user_id}' não encontrado.")
 
+        balance = await self._repo.get_balance(user_id)
+
         return UserResponse(
             user_id=str(user.id),
             name=str(user.name),
             email=str(user.email),
+            balance=balance,
         )
 
 
@@ -26,11 +29,15 @@ class GetAllUsersUseCase:
 
     async def execute(self) -> list[UserResponse]:
         users = await self._repo.list_all()
-        return [
-            UserResponse(
-                user_id=str(u.id),
-                name=str(u.name),
-                email=str(u.email),
+        responses: list[UserResponse] = []
+        for u in users:
+            balance = await self._repo.get_balance(u.id)
+            responses.append(
+                UserResponse(
+                    user_id=str(u.id),
+                    name=str(u.name),
+                    email=str(u.email),
+                    balance=balance,
+                )
             )
-            for u in users
-        ]
+        return responses

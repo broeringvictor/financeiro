@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from app.application.dto.user_dto import CreateUserInput, UserResponse
 from app.domain.entities.user import User
 from app.domain.repositories.user_repository import IUserRepository
@@ -27,4 +29,5 @@ class CreateUserUseCase:
             user_id=str(user.id),
             name=str(user.name),
             email=str(user.email),
+            balance=Decimal("0.00"),
         )

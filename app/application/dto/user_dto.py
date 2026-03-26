@@ -1,6 +1,8 @@
 from pydantic import EmailStr
 from pydantic.dataclasses import dataclass
 
+from decimal import Decimal
+
 
 @dataclass(frozen=True)
 class CreateUserInput:
@@ -39,3 +41,4 @@ class UserResponse:
     user_id: str
     name: str
     email: str
+    balance: Decimal

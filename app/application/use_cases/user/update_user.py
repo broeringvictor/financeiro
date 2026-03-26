@@ -25,8 +25,11 @@ class UpdateUserUseCase:
 
         await self._repo.save(user)
 
+        balance = await self._repo.get_balance(user.id)
+
         return UserResponse(
             user_id=str(user.id),
             name=str(user.name),
             email=str(user.email),
+            balance=balance,
         )
