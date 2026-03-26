@@ -1,16 +1,35 @@
-from datetime import datetime
+from datetime import UTC, datetime
 from decimal import Decimal
+from uuid import uuid8
 
-from pydantic import BaseModel, UUID8
+from pydantic import BaseModel, UUID8, Field
 
 from app.domain.enums.e_transaction import TransactionType
+from app.domain.value_objects.amount import Amount
 
 
 class Transaction(BaseModel):
-    id: UUID8
+    id: UUID8 = Field(default_factory=uuid8)
     user_id: UUID8
     category_id: int
     type: TransactionType
+    amount: Amount
+    occurred_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
     description: str | None = None
-    amount: Decimal
-    occurred_at: datetime
+
+    @classmethod
+    def create(
+        cls,
+        user_id: UUID8,
+        category_id: int,
+        type: TransactionType,
+        amount: Decimal | int | float | str,
+        description: str | None = None,
+    ) -> "Transaction":
+        return cls(
+            user_id=user_id,
+            category_id=category_id,
+            type=type,
+            amount=Amount.create(amount),
+            description=description,
+        )

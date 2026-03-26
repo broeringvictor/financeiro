@@ -1,5 +1,5 @@
 import pytest
-from domain.value_objects.password import Password
+from app.domain.value_objects.password import Password
 
 
 # ── fixtures ──────────────────────────────────────────────────────────────────
