@@ -14,6 +14,7 @@ from app.api.v1.dependencies import (
 from app.application.dto.user_dto import (
     ChangePasswordInput,
     CreateUserInput,
+    UpdateUserBody,
     UpdateUserInput,
     UserResponse,
 )
@@ -34,6 +35,13 @@ def _handle_exc(exc: Exception) -> None:
     raise HTTPException(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc)
     )
+
+
+def _normalize_optional_email(email: str | None) -> str | None:
+    if email is None:
+        return None
+    normalized = email.strip()
+    return normalized or None
 
 
 @router.post("/", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
@@ -68,7 +76,7 @@ async def get_user(
 @router.patch("/{user_id}", response_model=UserResponse)
 async def update_user(
     user_id: str,
-    body: UpdateUserInput,
+    body: UpdateUserBody,
     use_case: UpdateUserUseCase = Depends(get_update_user_use_case),
 ) -> UserResponse:
     try:
@@ -77,7 +85,7 @@ async def update_user(
                 user_id=user_id,
                 first_name=body.first_name,
                 last_name=body.last_name,
-                email=body.email,
+                email=_normalize_optional_email(body.email),
             )
         )
     except LookupError as exc:

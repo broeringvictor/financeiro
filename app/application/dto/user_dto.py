@@ -12,6 +12,13 @@ class CreateUserInput:
 
 
 @dataclass(frozen=True)
+class UpdateUserBody:
+    first_name: str | None = None
+    last_name: str | None = None
+    email: str | None = None
+
+
+@dataclass(frozen=True)
 class UpdateUserInput:
     user_id: str
     first_name: str | None = None
